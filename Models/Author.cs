@@ -12,6 +12,11 @@ namespace Ardelean_Daria_Labb2.Models
         public String LastName { get; set; }
 
         public ICollection<Book>? Books { get; set; }
+        [Display(Name = "Full Name")]
+        public string FullName
+        {
+            get { return LastName + " " + FirstName; }
+        }
 
 
     }

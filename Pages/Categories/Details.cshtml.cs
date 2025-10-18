@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Ardelean_Daria_Labb2.Data;
 using Ardelean_Daria_Labb2.Models;
 
-namespace Ardelean_Daria_Labb2.Pages.Books
+namespace Ardelean_Daria_Labb2.Pages.Categories
 {
     public class DetailsModel : PageModel
     {
@@ -19,26 +19,23 @@ namespace Ardelean_Daria_Labb2.Pages.Books
             _context = context;
         }
 
-      public Book Book { get; set; } = default!; 
+      public Category Category { get; set; } = default!; 
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null)
+            if (id == null || _context.Category == null)
             {
                 return NotFound();
             }
 
-            Book = await _context.Book
-            .Include(b => b.Author) 
-            .Include(b => b.Publisher) 
-            .Include(b => b.BookCategories)  
-            .ThenInclude(bc => bc.Category) 
-            .AsNoTracking()
-            .FirstOrDefaultAsync(m => m.ID == id);
-
-            if(Book == null)
+            var category = await _context.Category.FirstOrDefaultAsync(m => m.ID == id);
+            if (category == null)
             {
                 return NotFound();
+            }
+            else 
+            {
+                Category = category;
             }
             return Page();
         }

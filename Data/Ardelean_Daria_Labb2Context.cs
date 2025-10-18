@@ -18,5 +18,6 @@ namespace Ardelean_Daria_Labb2.Data
 
         public DbSet<Ardelean_Daria_Labb2.Models.Publisher> Publisher { get; set; } = default!;
         public DbSet<Ardelean_Daria_Labb2.Models.Author> Author { get; set; } = default!;
+        public DbSet<Ardelean_Daria_Labb2.Models.Category> Category { get; set; } = default!;
     }
 }
