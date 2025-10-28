@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Ardelean_Daria_Labb2.Data;
 using Ardelean_Daria_Labb2.Models;
+using Ardelean_Daria_Labb2.Models.ViewModels;
 
 namespace Ardelean_Daria_Labb2.Pages.Categories
 {
@@ -19,13 +19,31 @@ namespace Ardelean_Daria_Labb2.Pages.Categories
             _context = context;
         }
 
-        public IList<Category> Category { get;set; } = default!;
+        public CategoryIndexData CategoryData { get; set; }
+        public int CategoryID { get; set; }
 
-        public async Task OnGetAsync()
+
+        public async Task OnGetAsync(int? id)
         {
-            if (_context.Category != null)
+            CategoryData = new CategoryIndexData();
+
+            CategoryData.Categories = await _context.Category
+                .Include(c => c.BookCategories)
+                    .ThenInclude(bc => bc.Book)
+                        .ThenInclude(b => b.Author)
+                .OrderBy(c => c.CategoryName)
+                .ToListAsync();
+
+            if (id != null)
             {
-                Category = await _context.Category.ToListAsync();
+                CategoryID = id.Value;
+
+                // găsim categoria selectată
+                var category = CategoryData.Categories
+                    .Where(c => c.ID == id.Value)
+                    .Single();
+
+                CategoryData.Books = category.BookCategories.Select(bc => bc.Book);
             }
         }
     }
