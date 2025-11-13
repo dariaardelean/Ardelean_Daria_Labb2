@@ -23,19 +23,22 @@ namespace Ardelean_Daria_Labb2.Pages.Books
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Book == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var book = await _context.Book.FirstOrDefaultAsync(m => m.ID == id);
-            if (book == null)
+            Book = await _context.Book
+            .Include(b => b.Author) 
+            .Include(b => b.Publisher) 
+            .Include(b => b.BookCategories)  
+            .ThenInclude(bc => bc.Category) 
+            .AsNoTracking()
+            .FirstOrDefaultAsync(m => m.ID == id);
+
+            if(Book == null)
             {
                 return NotFound();
-            }
-            else 
-            {
-                Book = book;
             }
             return Page();
         }
