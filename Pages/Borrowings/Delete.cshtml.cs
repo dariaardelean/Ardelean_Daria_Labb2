@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Ardelean_Daria_Labb2.Data;
 using Ardelean_Daria_Labb2.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace Ardelean_Daria_Labb2.Pages.Borrowings
 {
+    [Authorize(Roles = "Admin")]
     public class DeleteModel : PageModel
     {
         private readonly Ardelean_Daria_Labb2.Data.Ardelean_Daria_Labb2Context _context;

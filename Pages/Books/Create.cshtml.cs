@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Ardelean_Daria_Labb2.Data;
 using Ardelean_Daria_Labb2.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace Ardelean_Daria_Labb2.Pages.Books
 {
+    [Authorize(Roles = "Admin")]
     public class CreateModel : BookCategoriesPageModel
     {
         private readonly Ardelean_Daria_Labb2.Data.Ardelean_Daria_Labb2Context _context;
